@@ -1,0 +1,158 @@
+.container {
+  display: flex;
+  min-height: 100vh;
+  background: #f8f8fa;
+}
+
+.sidebar {
+  width: 220px;
+  background: #fff;
+  border-right: 1px solid #eee;
+  padding: 24px 0;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 20px;
+  color: #5d2e8c;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav li {
+  padding: 12px 32px;
+  color: #5d2e8c;
+  cursor: pointer;
+}
+
+.sidebar nav .active {
+  background: #f3eaff;
+  border-left: 4px solid #5d2e8c;
+  font-weight: bold;
+}
+
+.main-content {
+  flex: 1;
+  padding: 32px 48px;
+  background: #f8f8fa;
+}
+
+.header {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.user {
+  background: #e6f5e9;
+  color: #2e8c5d;
+  padding: 8px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.user .icon {
+  margin-right: 8px;
+}
+
+.portfolio-list-section h2 {
+  margin-top: 0;
+  color: #5d2e8c;
+}
+
+.filter-bar {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.search-input {
+  flex: 2;
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 1px solid #c9b6e7;
+  font-size: 16px;
+  outline: none;
+}
+
+.filter-select,
+.sort-select {
+  flex: 1;
+  padding: 10px 20px;
+  border-radius: 24px;
+  border: 1px solid #c9b6e7;
+  font-size: 16px;
+  outline: none;
+  background: #fff;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.mhs-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 2px 8px #0001;
+  padding: 28px 24px 24px 24px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid #e6e0f3;
+}
+
+.mhs-nama {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2d0066;
+  margin-bottom: 2px;
+}
+
+.mhs-nim {
+  font-size: 15px;
+  color: #666;
+  margin-bottom: 16px;
+}
+
+.mhs-skills {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.skill-badge {
+  background: #6c1eb1;
+  color: #fff;
+  border-radius: 16px;
+  padding: 6px 18px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.detail-btn {
+  background: #ff7f1f;
+  color: #fff;
+  border: none;
+  border-radius: 16px;
+  padding: 10px 28px;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: background 0.2s;
+}
+
+.detail-btn:hover {
+  background: #e66c00;
+}
