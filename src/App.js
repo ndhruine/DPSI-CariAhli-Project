@@ -6,6 +6,7 @@ import LoginPage from './LoginPage';
 import ForgotPasswordPage from './ForgotPasswordPage';
 import ResetPasswordPage from './ResetPasswordPage';
 import HomePage from './HomePage';
+import PerusahaanDashboard from './perusahaan-dashboard/PerusahaanDashboard';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('beranda');
@@ -25,6 +26,8 @@ function App() {
         return <ResetPasswordPage onNavigate={setCurrentPage} />;
       case 'home':
         return <HomePage onNavigate={setCurrentPage} />;
+      case 'perusahaan-dashboard':
+        return <PerusahaanDashboard onNavigate={setCurrentPage} />;
       default:
         return <LandingPage onNavigate={setCurrentPage} />;
     }
