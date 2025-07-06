@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import PortofolioMahasiswaPage from "./Portofoliomahasiswa";
-import "./PortofolioMahasiswa.css";
+import PortofolioMahasiswaDetail from "./DetailPorto"; // Import komponen detail
+import "./App.css";
 
 function DashboardPenilaian() {
   const [portfolios, setPortfolios] = useState([
@@ -183,6 +184,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<DashboardPenilaian />} />
         <Route path="/portofolio" element={<PortofolioMahasiswaPage />} />
+        <Route path="/detail/:nim" element={<PortofolioMahasiswaDetail />} /> {/* Route detail */}
       </Routes>
     </Router>
   );

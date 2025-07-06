@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "./PortofolioMahasiswaPage.css";
+import { useNavigate, Link } from "react-router-dom";
+import "./PortofolioMahasiswa.css";
 
 const dummyData = [
   {
@@ -31,6 +32,7 @@ const dummyData = [
 
 export default function PortofolioMahasiswaPage() {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = dummyData.filter(
     (m) =>
@@ -41,11 +43,19 @@ export default function PortofolioMahasiswaPage() {
   return (
     <div className="container">
       <aside className="sidebar">
-        <div className="logo">CARIAHIQ</div>
+        <div className="logo">CARI AHLI</div>
         <nav>
           <ul>
-            <li>Dashboard Saya</li>
-            <li className="active">Portofolio Mahasiswa</li>
+            <li>
+              <Link to="/" style={{ color: "#5d2e8c", textDecoration: "none" }}>
+                Dashboard Saya
+              </Link>
+            </li>
+            <li className="active">
+              <Link to="/portofolio" style={{ color: "#5d2e8c", textDecoration: "none" }}>
+                Portofolio Mahasiswa
+              </Link>
+            </li>
           </ul>
         </nav>
       </aside>
@@ -87,7 +97,12 @@ export default function PortofolioMahasiswaPage() {
                     </span>
                   ))}
                 </div>
-                <button className="detail-btn">Lihat detail Portofolio</button>
+                <button
+                  className="detail-btn"
+                  onClick={() => navigate(`/detail/${mhs.nim}`)}
+                >
+                  Lihat detail Portofolio
+                </button>
               </div>
             ))}
           </div>

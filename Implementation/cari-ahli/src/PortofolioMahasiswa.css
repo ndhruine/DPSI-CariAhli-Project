@@ -1,27 +1,25 @@
-body {
-  font-family: 'Segoe UI', sans-serif;
-  background: #f8f8fa;
-  margin: 0;
-}
+/* ...existing code... */
 
 .container {
   display: flex;
   min-height: 100vh;
+  background: #f8f8fa;
 }
 
 .sidebar {
-  width: 220px;
+  width: 260px;
   background: #fff;
   border-right: 1px solid #eee;
-  padding: 24px 0;
+  padding: 32px 0 0 0;
 }
 
 .logo {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 24px;
   color: #5d2e8c;
-  margin-bottom: 40px;
+  margin-bottom: 56px;
   text-align: center;
+  letter-spacing: 2px;
 }
 
 .sidebar nav ul {
@@ -30,158 +28,162 @@ body {
 }
 
 .sidebar nav li {
-  padding: 12px 32px;
-  color: #5d2e8c;
+  padding: 14px 36px;
+  color: #b6a6d7;
   cursor: pointer;
+  font-size: 17px;
+  border-radius: 0 24px 24px 0;
+  margin-bottom: 4px;
+  transition: background 0.2s, color 0.2s;
 }
 
 .sidebar nav .active {
   background: #f3eaff;
   border-left: 4px solid #5d2e8c;
+  color: #5d2e8c;
   font-weight: bold;
 }
 
 .main-content {
   flex: 1;
-  padding: 32px 48px;
+  padding: 0;
   background: #f8f8fa;
+  display: flex;
+  flex-direction: column;
 }
 
 .header {
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-end;
   align-items: center;
-  margin-bottom: 24px;
+  height: 80px;
+  border-bottom: 3px solid #5d2e8c;
+  padding: 0 48px;
+  background: #fff;
 }
 
 .user {
   background: #e6f5e9;
   color: #2e8c5d;
-  padding: 8px 16px;
-  border-radius: 20px;
+  padding: 10px 22px;
+  border-radius: 24px;
   display: flex;
   align-items: center;
   font-weight: 500;
+  font-size: 18px;
 }
 
 .user .icon {
-  margin-right: 8px;
+  margin-right: 10px;
+  font-size: 22px;
 }
 
-.portfolio-section {
-  background: #fff;
-  border-radius: 12px;
-  padding: 24px;
-  box-shadow: 0 2px 8px #0001;
+.portfolio-list-section {
+  padding: 40px 60px 0 60px;
 }
 
-.alert {
-  background: #f3eaff;
+.portfolio-list-section h2 {
+  margin-top: 0;
   color: #5d2e8c;
-  padding: 12px 24px;
-  border-radius: 8px;
+  font-size: 28px;
+  font-weight: bold;
+  margin-bottom: 28px;
+}
+
+.filter-bar {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
+  gap: 18px;
+  margin-bottom: 38px;
+}
+
+.search-input {
+  flex: 2;
+  padding: 12px 24px;
+  border-radius: 24px;
+  border: 2px solid #c9b6e7;
+  font-size: 17px;
+  outline: none;
+  background: #fff;
+  color: #5d2e8c;
+}
+
+.filter-select,
+.sort-select {
+  flex: 1;
+  padding: 12px 24px;
+  border-radius: 24px;
+  border: 2px solid #c9b6e7;
+  font-size: 17px;
+  outline: none;
+  background: #fff;
+  color: #5d2e8c;
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 36px 32px;
+}
+
+.mhs-card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 2px 12px #0001;
+  padding: 32px 28px 28px 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  border: 2px solid #e6e0f3;
+  min-width: 340px;
+}
+
+.mhs-nama {
+  font-size: 22px;
+  font-weight: bold;
+  color: #2d0066;
+  margin-bottom: 2px;
+}
+
+.mhs-nim {
+  font-size: 16px;
+  color: #666;
+  margin-bottom: 18px;
+}
+
+.mhs-skills {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.skill-badge {
+  background: #6c1eb1;
+  color: #fff;
+  border-radius: 16px;
+  padding: 8px 22px;
+  font-size: 15px;
   font-weight: 500;
 }
 
-.update-btn {
-  background: #5d2e8c;
+.detail-btn {
+  background: #ff7f1f;
   color: #fff;
   border: none;
-  border-radius: 20px;
-  padding: 8px 20px;
+  border-radius: 16px;
+  padding: 12px 32px;
+  font-size: 17px;
+  font-weight: 500;
   cursor: pointer;
-  margin-left: 24px;
+  margin-top: 10px;
+  transition: background 0.2s;
+  box-shadow: 0 2px 8px #ff7f1f22;
 }
 
-.portfolio-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 32px;
+.detail-btn:hover {
+  background: #e66c00;
 }
 
-.portfolio-table th, .portfolio-table td {
-  border: 1px solid #eee;
-  padding: 12px 16px;
-  text-align: left;
-}
-
-.status {
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 13px;
-}
-
-.status.pending {
-  background: #f3eaff;
-  color: #5d2e8c;
-}
-
-.status.updated {
-  background: #e6f5e9;
-  color: #2e8c5d;
-}
-
-.feedback-section {
-  display: flex;
-  gap: 32px;
-}
-
-.feedback {
-  flex: 1;
-  background: #f8f8fa;
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.feedback h4 {
-  margin-top: 0;
-}
-
-.rating {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-
-.rating label {
-  display: block;
-  font-size: 13px;
-  margin-bottom: 4px;
-}
-
-.rating input {
-  width: 40px;
-  padding: 4px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-textarea {
-  width: 100%;
-  min-height: 60px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  margin-bottom: 12px;
-  padding: 8px;
-  resize: vertical;
-}
-
-.save-btn {
-  background: #5d2e8c;
-  color: #fff;
-  border: none;
-  border-radius: 20px;
-  padding: 8px 20px;
-  cursor: pointer;
-}
-
-.monitoring {
-  flex: 1;
-  background: #f8f8fa;
-  border-radius: 8px;
-  padding: 16px;
+/* Tambahan agar sidebar tidak menempel ke kiri */
+body {
+  background: #000;
 }
