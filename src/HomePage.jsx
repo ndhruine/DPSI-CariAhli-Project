@@ -213,7 +213,10 @@ export default function HomePage({ onNavigate }) {
                 <div className="dropdown-menu">
                   <button onClick={() => setShowLayananDropdown(false)}>Career Center</button>
                   <button onClick={() => setShowLayananDropdown(false)}>Mahasiswa</button>
-                  <button onClick={() => setShowLayananDropdown(false)}>Perusahaan</button>
+                  <button onClick={() => {
+                    setShowLayananDropdown(false);
+                    onNavigate && onNavigate('perusahaan-dashboard');
+                  }}>Perusahaan</button>
                   <button onClick={() => setShowLayananDropdown(false)}>Admin</button>
                 </div>
               )}
