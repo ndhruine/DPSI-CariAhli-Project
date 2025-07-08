@@ -1,20 +1,66 @@
-import React from "react";
+import React, { useState } from "react";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { auth, db } from "./Firebase";
+import { useNavigate } from "react-router-dom";
 
-export default function RegisterPage({ onNavigate }) {
+export default function RegisterPage() {
+  const navigate = useNavigate();
+  const [form, setForm] = useState({
+    nama: "",
+    email: "",
+    hp: "",
+    password: "",
+    konfirmasi: "",
+    role: "",
+  });
+
+  const handleChange = (e) => {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const handleRegister = async () => {
+    const { nama, email, hp, password, konfirmasi, role } = form;
+
+    if (!nama || !email || !hp || !password || !konfirmasi || !role) {
+      alert("Semua kolom wajib diisi.");
+      return;
+    }
+
+    if (password !== konfirmasi) {
+      alert("Password tidak cocok.");
+      return;
+    }
+
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        uid: user.uid,
+        nama,
+        email,
+        hp,
+        role,
+      });
+
+      alert("Registrasi berhasil! Anda akan diarahkan ke halaman login.");
+      setTimeout(() => navigate("/login"), 1000);
+    } catch (error) {
+      alert("Gagal registrasi: " + error.message);
+    }
+  };
+
   return (
     <>
-      {/* ----------  STYLES  ---------- */}
       <style>{`
-        /* Design tokens */
         :root {
           --purple: #4B0082;
           --orange: #FF6F00;
-          --teal: #009688;
           --white: #FFFFFF;
           --font: "Inter", "Helvetica", sans-serif;
         }
 
-        /* Global reset */
         * {
           margin: 0;
           padding: 0;
@@ -72,7 +118,7 @@ export default function RegisterPage({ onNavigate }) {
 
         .form-panel select {
           cursor: pointer;
-          color: #999;
+          color: ${form.role ? "#333" : "#999"};
         }
 
         .form-panel select option {
@@ -93,11 +139,6 @@ export default function RegisterPage({ onNavigate }) {
           max-width: 240px;
           align-self: center;
           text-transform: uppercase;
-          font-family: var(--font);
-        }
-
-        .submit-btn:hover {
-          opacity: 0.9;
         }
 
         .bottom-text {
@@ -124,25 +165,19 @@ export default function RegisterPage({ onNavigate }) {
           background-size: cover;
         }
 
-        /* Responsive design */
         @media (max-width: 959px) {
           .register-page {
             flex-direction: column;
             height: auto;
-            min-height: 100vh;
           }
-          
           .form-panel {
             width: 100%;
-            min-width: auto;
             padding: 40px 32px;
           }
-          
           .illustration {
             width: 100%;
             height: 300px;
             background-position: center;
-            background-size: contain;
           }
         }
 
@@ -150,15 +185,9 @@ export default function RegisterPage({ onNavigate }) {
           .form-panel {
             padding: 32px 24px;
           }
-          
           .form-panel h1 {
             font-size: 20px;
           }
-          
-          .form-panel .subtitle {
-            font-size: 14px;
-          }
-          
           .form-panel input,
           .form-panel select {
             font-size: 14px;
@@ -166,37 +195,33 @@ export default function RegisterPage({ onNavigate }) {
         }
       `}</style>
 
-      {/* ----------  MARKUP  ---------- */}
       <div className="register-page">
         <div className="form-panel">
-          <h1>SELAMAT DATANG</h1>
-          <p className="subtitle">Buat akun di Cari Ahli</p>
-          
-          <input type="text" placeholder="Nama Lengkap" required />
-          <input type="email" placeholder="Email" required />
-          <input type="tel" placeholder="No. Hp" required />
-          <input type="password" placeholder="Password" required />
-          <input type="password" placeholder="Konfirmasi password" required />
-          
-          <select required>
-            <option value="" disabled selected>Saya adalah...</option>
+          <h1 style={{ color: "#FF6F00" }}>SELAMAT DATANG</h1>
+          <p>Buat akun di Cari Ahli</p>
+          <input type="text" name="nama" placeholder="Nama Lengkap" onChange={handleChange} />
+          <input type="email" name="email" placeholder="Email" onChange={handleChange} />
+          <input type="tel" name="hp" placeholder="No. Hp" onChange={handleChange} />
+          <input type="password" name="password" placeholder="Password" onChange={handleChange} />
+          <input type="password" name="konfirmasi" placeholder="Konfirmasi password" onChange={handleChange} />
+          <select name="role" value={form.role} onChange={handleChange}>
+            <option value="" disabled hidden>Saya adalah...</option>
             <option value="mahasiswa">Mahasiswa</option>
-            <option value="perusahaan">Perusahaan</option>
-            <option value="lainnya">Lainnya</option>
+            <option value="rekruter">Perusahaan</option>
+            <option value="dosen">Dosen</option>
+            <option value="admin">Admin</option>
           </select>
-          
-          <button className="submit-btn" onClick={() => onNavigate && onNavigate('home')}>DAFTAR</button>
-          
+          <button className="submit-btn" onClick={handleRegister}>DAFTAR</button>
+        
           <p className="bottom-text">
             <span className="orange">Sudah punya akun?</span>{" "}
-            <span className="white" onClick={() => onNavigate && onNavigate('login')}>
+            <span className="white" onClick={() => navigate("/login")}>
               Masuk di sini
             </span>
           </p>
         </div>
-        
         <div className="illustration" />
       </div>
     </>
   );
-} 
+}

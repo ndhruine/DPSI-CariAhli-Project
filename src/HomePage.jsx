@@ -1,13 +1,13 @@
-import React, { useState } from "react";
 
-export default function HomePage({ onNavigate }) {
-  const [showLayananDropdown, setShowLayananDropdown] = useState(false);
+import { useNavigate } from "react-router-dom";
+
+export default function HomePage() {
+  const navigate = useNavigate();
 
   return (
     <>
       {/* ----------  STYLES  ---------- */}
       <style>{`
-        /* Design tokens */
         :root {
           --purple: #4B0082;
           --orange: #FF6F00;
@@ -16,7 +16,6 @@ export default function HomePage({ onNavigate }) {
           --font: "Inter", "Helvetica", sans-serif;
         }
 
-        /* Global reset */
         * {
           margin: 0;
           padding: 0;
@@ -31,13 +30,11 @@ export default function HomePage({ onNavigate }) {
         }
 
         .page {
-          font-family: var(--font);
           min-height: 100vh;
           display: flex;
           flex-direction: column;
         }
 
-        /* Navigation Bar */
         .navbar {
           height: 76px;
           display: flex;
@@ -117,6 +114,34 @@ export default function HomePage({ onNavigate }) {
           color: var(--orange);
         }
 
+        .auth-pill {
+          display: flex;
+          height: 40px;
+          width: 220px;
+          border-radius: 9999px;
+          overflow: hidden;
+          border: 2px solid var(--purple);
+        }
+
+        .auth-pill button {
+          flex: 1;
+          border: none;
+          cursor: pointer;
+          font: 600 14px/1 var(--font);
+          text-transform: uppercase;
+        }
+
+        .auth-pill .login {
+          background: var(--purple);
+          color: var(--orange);
+        }
+
+        .auth-pill .register {
+          background: var(--white);
+          color: var(--purple);
+          border-left: 2px solid var(--purple);
+        }
+
         .profile-icon {
           font-size: 24px;
           cursor: pointer;
@@ -136,7 +161,6 @@ export default function HomePage({ onNavigate }) {
           color: var(--white);
         }
 
-        /* Hero Section */
         .hero {
           display: grid;
           grid-template-columns: minmax(480px,46%) 1fr;
@@ -144,10 +168,6 @@ export default function HomePage({ onNavigate }) {
           padding: 100px 60px 0 60px;
           min-height: 680px;
           background: url("/images/landing_bg.png") top right/contain no-repeat;
-        }
-
-        .hero-text {
-          /* No flex properties needed for grid */
         }
 
         .tag {
@@ -171,11 +191,6 @@ export default function HomePage({ onNavigate }) {
           margin-bottom: 28px;
         }
 
-        .hero-img {
-          /* Empty div for grid layout, background is on .hero */
-        }
-
-        /* Responsive Design */
         @media(max-width:1279px){
           .headline{font-size:32px;}
         }
@@ -199,30 +214,18 @@ export default function HomePage({ onNavigate }) {
             src="/images/logo.png" 
             alt="Logo" 
             className="logo"
-            onClick={() => onNavigate && onNavigate('home')}
+            onClick={() => navigate("/")}
           />
           
           <nav className="nav-links">
             <button className="active">BERANDA</button>
-            <button onClick={() => onNavigate && onNavigate('tentang')}>TENTANG KAMI</button>
-            <div className="layanan-dropdown">
-              <button onClick={() => setShowLayananDropdown(!showLayananDropdown)}>
-                LAYANAN <span className="dropdown-arrow">▼</span>
-              </button>
-              {showLayananDropdown && (
-                <div className="dropdown-menu">
-                  <button onClick={() => setShowLayananDropdown(false)}>Career Center</button>
-                  <button onClick={() => setShowLayananDropdown(false)}>Mahasiswa</button>
-                  <button onClick={() => setShowLayananDropdown(false)}>Perusahaan</button>
-                  <button onClick={() => setShowLayananDropdown(false)}>Admin</button>
-                </div>
-              )}
-            </div>
+            <button onClick={() => navigate("/tentang")}>TENTANG KAMI</button>
           </nav>
           
-          <div className="profile-icon" onClick={() => onNavigate && onNavigate('beranda')}>
-            👤
-          </div>
+        <div className="auth-pill">
+          <button className="login" onClick={() => navigate("/login")}>Log In</button>
+          <button className="register" onClick={() => navigate("/register")}>Daftar</button>
+        </div>
         </header>
 
         <section className="hero">
@@ -239,4 +242,4 @@ export default function HomePage({ onNavigate }) {
       </div>
     </>
   );
-} 
+}

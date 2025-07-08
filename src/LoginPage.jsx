@@ -1,21 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth, db } from "./Firebase";
+import { useNavigate } from "react-router-dom";
+import { doc, getDoc } from "firebase/firestore";
 
-export default function LoginPage({ onNavigate }) {
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Silakan isi email dan password.");
+      return;
+    }
+
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
+
+      const userDoc = await getDoc(doc(db, "users", user.uid));
+      if (userDoc.exists()) {
+        const role = userDoc.data().role;
+        alert("Login berhasil!");
+        navigate(`/${role}`); // navigasi otomatis ke /mahasiswa, /admin, dst
+      } else {
+        alert("Data pengguna tidak ditemukan.");
+      }
+    } catch (error) {
+      alert("Gagal login: " + error.message);
+    }
+  };
+
   return (
     <>
-      {/* ----------  STYLES  ---------- */}
       <style>{`
-        /* Design tokens */
         :root {
           --purple: #4B0082;
           --orange: #FF6F00;
-          --teal: #009688;
           --white: #FFFFFF;
           --gray: #999999;
           --font: "Inter", "Helvetica", sans-serif;
         }
 
-        /* Global reset */
         * {
           margin: 0;
           padding: 0;
@@ -104,11 +131,6 @@ export default function LoginPage({ onNavigate }) {
           font-weight: 500;
         }
 
-        .bottom-link .purple {
-          color: var(--purple);
-          font-weight: 500;
-        }
-
         .bottom-link .white {
           color: var(--white);
           font-weight: 500;
@@ -122,7 +144,6 @@ export default function LoginPage({ onNavigate }) {
           background-size: cover;
         }
 
-        /* Responsive design */
         @media (max-width: 959px) {
           .login-page {
             flex-direction: column;
@@ -130,13 +151,13 @@ export default function LoginPage({ onNavigate }) {
             min-height: 100vh;
             overflow: auto;
           }
-          
+
           .form-panel {
             width: 100%;
             min-width: auto;
             padding: 40px 32px;
           }
-          
+
           .illustration {
             width: 100%;
             height: 300px;
@@ -149,49 +170,45 @@ export default function LoginPage({ onNavigate }) {
           .form-panel {
             padding: 32px 24px;
           }
-          
+
           .form-panel h1 {
             font-size: 20px;
           }
-          
+
           .form-panel .subtitle {
             font-size: 14px;
           }
-          
+
           .form-panel input {
             font-size: 14px;
           }
         }
       `}</style>
 
-      {/* ----------  MARKUP  ---------- */}
       <div className="login-page">
         <div className="form-panel">
-          <h1>SELAMAT DATANG</h1>
-          <p className="subtitle">Masuk dan lanjutkan pencarian Anda</p>
-          
-          <input type="text" placeholder="Email atau Username" required />
-          <input type="password" placeholder="Password" required />
-          
-          <button className="submit-btn" onClick={() => onNavigate && onNavigate('home')}>MASUK</button>
-          
+          <h1 style={{ color: "#FF6F00" }}>SELAMAT DATANG</h1>
+          <p>Masuk untuk melanjutkan</p>
+          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <button className="submit-btn" onClick={handleLogin}>MASUK</button>
+        
           <p className="bottom-link">
             <span className="orange">Lupa Password?</span>{" "}
-            <span className="white" onClick={() => onNavigate && onNavigate('forgot-password')}>
+            <span className="white" onClick={() => navigate("/forgot-password")}>
               Klik di sini
             </span>
           </p>
-          
+
           <p className="bottom-link">
             <span className="orange">Belum punya akun?</span>{" "}
-            <span className="white" onClick={() => onNavigate && onNavigate('register')}>
+            <span className="white" onClick={() => navigate("/register")}>
               Daftar di sini
             </span>
           </p>
         </div>
-        
         <div className="illustration" />
       </div>
     </>
   );
-} 
+}
