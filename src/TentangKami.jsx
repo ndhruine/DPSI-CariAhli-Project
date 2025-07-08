@@ -1,11 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
-export default function TentangKami({ onNavigate }) {
+export default function TentangKami() {
+  const navigate = useNavigate();
+
   return (
     <>
-      {/* ----------  STYLES  ---------- */}
       <style>{`
-        /* Design tokens */
         :root {
           --purple: #4B0082;
           --orange: #FF6F00;
@@ -15,21 +16,19 @@ export default function TentangKami({ onNavigate }) {
           --font: "Inter", "Helvetica", sans-serif;
         }
 
-        /* Global reset */
         * {
           margin: 0;
           padding: 0;
           box-sizing: border-box;
         }
 
-        html,body,#root {
+        html, body, #root {
           height: 100%;
           width: 100%;
           background: var(--white);
           font-family: var(--font);
         }
 
-        /* Header styles */
         .nav {
           height: 76px;
           border-bottom: 4px solid var(--purple);
@@ -40,9 +39,10 @@ export default function TentangKami({ onNavigate }) {
           background: var(--white);
         }
 
-        .nav img.logo {
+        .logo {
           height: 32px;
           width: auto;
+          cursor: pointer;
         }
 
         .nav-menu {
@@ -55,12 +55,12 @@ export default function TentangKami({ onNavigate }) {
         .nav-menu button {
           color: var(--purple);
           text-decoration: none;
-          letter-spacing: .4px;
           background: none;
           border: none;
           cursor: pointer;
           font: inherit;
           text-transform: inherit;
+          letter-spacing: .4px;
         }
 
         .nav-menu button.active {
@@ -97,7 +97,6 @@ export default function TentangKami({ onNavigate }) {
 
         .section {
           padding: 64px 80px;
-          font-family: var(--font);
           color: var(--purple);
         }
 
@@ -151,14 +150,12 @@ export default function TentangKami({ onNavigate }) {
           color: var(--orange);
           font-weight: 600;
           margin-bottom: 6px;
-          line-height: 1.4;
         }
 
         .cta-banner .bottomline {
           font-size: 18px;
           font-weight: 600;
           color: var(--white);
-          line-height: 1.4;
         }
 
         .features {
@@ -174,7 +171,6 @@ export default function TentangKami({ onNavigate }) {
           background: var(--grayBg);
           padding: 28px 32px;
           border-radius: 12px;
-          position: relative;
         }
 
         .card-badge {
@@ -195,32 +191,29 @@ export default function TentangKami({ onNavigate }) {
           font-size: 20px;
           margin-bottom: 12px;
           font-weight: 700;
-          color: var(--purple);
         }
 
         .card p {
           font-size: 16px;
           line-height: 1.6;
-          color: var(--purple);
         }
 
-        /* Responsive design */
         @media (max-width: 959px) {
           .section {
             padding: 48px 32px;
           }
-          
+
           .intro {
             flex-direction: column;
             text-align: center;
             gap: 32px;
           }
-          
+
           .school-img {
             width: 100%;
             max-width: 480px;
           }
-          
+
           .features {
             flex-direction: column;
             gap: 24px;
@@ -231,15 +224,15 @@ export default function TentangKami({ onNavigate }) {
           .intro-text h2 {
             font-size: 24px;
           }
-          
+
           .intro-text p {
             font-size: 16px;
           }
-          
+
           .cta-banner {
             padding: 24px 32px;
           }
-          
+
           .cta-banner .topline,
           .cta-banner .bottomline {
             font-size: 16px;
@@ -247,67 +240,65 @@ export default function TentangKami({ onNavigate }) {
         }
       `}</style>
 
-      {/* ----------  MARKUP  ---------- */}
       <header className="nav">
-        <img className="logo" src="/images/logo.png" alt="Carilah logo" />
+        <img
+          className="logo"
+          src="/images/logo.png"
+          alt="Carilah logo"
+          onClick={() => navigate("/")}
+        />
 
         <nav className="nav-menu">
-          <button 
-            onClick={() => onNavigate && onNavigate('beranda')}
-          >
-            Beranda
-          </button>
-          <button 
-            className="active"
-          >
-            Tentang Kami
-          </button>
+          <button onClick={() => navigate("/home")}>Beranda</button>
+          <button className="active">Tentang Kami</button>
         </nav>
 
         <div className="auth-pill">
-          <button className="login" onClick={() => onNavigate && onNavigate('login')}>Log In</button>
-          <button className="register" onClick={() => onNavigate && onNavigate('register')}>Daftar</button>
+          <button className="login" onClick={() => navigate("/login")}>Log In</button>
+          <button className="register" onClick={() => navigate("/register")}>Daftar</button>
         </div>
       </header>
 
       <div className="section">
-        {/* Section 1 - Introduction */}
         <div className="intro">
           <img src="/images/school.png" alt="UAD building" className="school-img" />
           <div className="intro-text">
             <img src="/images/logo.png" alt="CariAhli Logo" className="intro-logo" />
             <h2>C A R I A H L I</h2>
             <p>
-              Platform yang dirancang khusus untuk menjembatani mahasiswa Universitas Ahmad Dahlan dengan dunia industri.
+              Platform yang dirancang khusus untuk menjembatani mahasiswa Universitas Ahmad Dahlan
+              dengan dunia industri.
             </p>
           </div>
         </div>
 
-        {/* Section 2 - Purple Banner */}
         <div className="cta-banner">
           <p className="topline">Temukan Inovator Masa Depan di Sini</p>
-          <p className="bottomline">Proposal terbaik dari mahasiswa UAD siap berkontribusi untuk perkembangan industri Anda</p>
+          <p className="bottomline">
+            Proposal terbaik dari mahasiswa UAD siap berkontribusi untuk perkembangan industri Anda
+          </p>
         </div>
 
-        {/* Section 3 - Features */}
         <div className="features">
           <div className="card">
-            <div className="card-badge">
-              <span>1</span>
-            </div>
+            <div className="card-badge">1</div>
             <h3>Portofolio Terkurasi</h3>
-            <p>Semua portofolio diunggah oleh admin resmi yang memverifikasi keaslian dan kualitasnya, memastikan hanya karya terbaik yang tampil.</p>
+            <p>
+              Semua portofolio diunggah oleh admin resmi yang memverifikasi keaslian dan kualitasnya,
+              memastikan hanya karya terbaik yang tampil.
+            </p>
           </div>
 
           <div className="card">
-            <div className="card-badge">
-              <span>2</span>
-            </div>
+            <div className="card-badge">2</div>
             <h3>Khusus Mahasiswa UAD</h3>
-            <p>Eksklusif untuk mahasiswa Universitas Ahmad Dahlan, guna memperkuat identitas kampus di dunia industri.</p>
+            <p>
+              Eksklusif untuk mahasiswa Universitas Ahmad Dahlan, guna memperkuat identitas kampus
+              di dunia industri.
+            </p>
           </div>
         </div>
       </div>
     </>
   );
-} 
+}

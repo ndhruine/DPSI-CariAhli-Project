@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
+import { sendPasswordResetEmail } from "firebase/auth";
+import { auth } from "./Firebase";
+import { useNavigate } from "react-router-dom";
 
-export default function ForgotPasswordPage({ onNavigate }) {
+export default function ForgotPasswordPage() {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState("");
+
+  const handleReset = async () => {
+    if (!email) {
+      alert("Email tidak boleh kosong.");
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      alert("Tautan reset password telah dikirim ke email Anda.");
+      navigate("/login");
+    } catch (error) {
+      alert("Gagal mengirim reset password: " + error.message);
+    }
+  };
+
   return (
     <>
       {/* ----------  STYLES  ---------- */}
@@ -163,7 +184,6 @@ export default function ForgotPasswordPage({ onNavigate }) {
         }
       `}</style>
 
-      {/* ----------  MARKUP  ---------- */}
       <div className="forgot-page">
         <div className="form-panel">
           <h1>Lupa Password</h1>
@@ -172,11 +192,19 @@ export default function ForgotPasswordPage({ onNavigate }) {
           </p>
           
           <label className="input-label">Email</label>
-          <input type="email" placeholder="Masukkan email Anda" required />
+          <input
+            type="email"
+            placeholder="Masukkan email Anda"
+            required
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
           
-          <button className="submit-btn" onClick={() => onNavigate && onNavigate('reset-password')}>Reset Password</button>
+          <button className="submit-btn" onClick={handleReset}>
+            Reset Password
+          </button>
           
-          <p className="back-link" onClick={() => onNavigate && onNavigate('login')}>
+          <p className="back-link" onClick={() => navigate("/login")}>
             Kembali ke login
           </p>
         </div>
@@ -185,4 +213,4 @@ export default function ForgotPasswordPage({ onNavigate }) {
       </div>
     </>
   );
-} 
+}
