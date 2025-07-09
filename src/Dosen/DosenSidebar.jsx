@@ -1,14 +1,14 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { getAuth, signOut } from "firebase/auth";
 
-const MahasiswaSidebar = ({ isOpen, onToggleSidebar }) => {
+const DosenSidebar = ({ isOpen, onToggleSidebar }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     const auth = getAuth();
     signOut(auth)
       .then(() => {
-        navigate("/"); // Redirect ke halaman login
+        navigate("/"); // redirect ke halaman login atau beranda
       })
       .catch((error) => {
         console.error("Logout gagal:", error);
@@ -21,7 +21,7 @@ const MahasiswaSidebar = ({ isOpen, onToggleSidebar }) => {
         ${isOpen ? 'translate-x-0' : '-translate-x-full'}
         w-64 bg-white shadow-md flex flex-col`}
     >
-      {/* Tombol toggle */}
+      {/* Tombol toggle sidebar */}
       <button
         onClick={onToggleSidebar}
         className="absolute top-4 right-[-40px] p-2 text-purple-700 bg-white rounded-md shadow"
@@ -32,7 +32,7 @@ const MahasiswaSidebar = ({ isOpen, onToggleSidebar }) => {
       {/* Navigasi utama */}
       <div className="p-4 flex flex-col space-y-2 flex-grow">
         <NavLink
-          to="/mahasiswa/mdashboard"
+          to="/dosen/ddashboard"
           className={({ isActive }) =>
             `p-2 rounded hover:bg-purple-200 font-medium ${
               isActive ? 'text-purple-700' : 'text-black'
@@ -42,17 +42,17 @@ const MahasiswaSidebar = ({ isOpen, onToggleSidebar }) => {
           Dashboard
         </NavLink>
         <NavLink
-          to="/mahasiswa/portofolio"
+          to="/dosen/portofoliomahasiswa"
           className={({ isActive }) =>
             `p-2 rounded hover:bg-purple-200 font-medium ${
               isActive ? 'text-purple-700' : 'text-black'
             }`
           }
         >
-          Portofolio Saya
+          Portofolio Mahasiswa
         </NavLink>
 
-              {/* Tombol logout di bawah */}
+              {/* Tombol logout di bagian bawah sidebar */}
       <div className="p-4">
         <button
           onClick={handleLogout}
@@ -66,4 +66,4 @@ const MahasiswaSidebar = ({ isOpen, onToggleSidebar }) => {
   );
 };
 
-export default MahasiswaSidebar;
+export default DosenSidebar;

@@ -23,6 +23,11 @@ import TambahPortofolio from "./Admin/TambahPortofolio";
 import AdminDashboard from "./Admin/AdminDashboard";
 import DetailPortofolio from "./Admin/DetailPortofolio";
 import TabelRekruter from "./Admin/TabeRekruter";
+import Dosen from "./Dosen/Dosen";
+import PortofolioMahasiswa from "./Dosen/PortofolioMahasiswa";
+import DosenDashboard from "./Dosen/DosenDashboard";
+import DDetailPortofolio from "./Dosen/DDetailPortofolio";
+import Perusahaan from "./perusahaan/Perusahaan";
 
 function App() {
   return (
@@ -52,6 +57,13 @@ function App() {
           <Route path="mdashboard" element={<MahasiswaDashboard />} />
           <Route path="portofolio" element={<MahasiswaPortofolio />} />
         </Route>
+        <Route path="/dosen" element={<Dosen />} >
+          <Route index element={<DosenDashboard />} />
+          <Route path="ddashboard" element={<DosenDashboard />} />
+          <Route path="portofoliomahasiswa" element={<PortofolioMahasiswa />} />
+          <Route path="ddetailportofolio/:id" element={<DDetailPortofolio />} />
+        </Route>
+        <Route path="/perusahaan" element={<Perusahaan />} />
       </Routes>
   );
 }

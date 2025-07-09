@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { doc, getDoc, collection, getDocs } from 'firebase/firestore';
 import { db } from '../Firebase';
 
-const DetailPortofolio = () => {
+const DDetailPortofolio = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
@@ -119,4 +119,4 @@ const DetailPortofolio = () => {
   );
 };
 
-export default DetailPortofolio;
+export default DDetailPortofolio;
