@@ -227,7 +227,7 @@ export default function LandingPage() {
 
           <div className="cta">
             <button className="login-btn" onClick={() => navigate("/login")}>LOG IN</button>
-            <button className="signup-btn" onClick={() => navigate("/register")}>DAFTAR</button>
+            <button className="signup-btn" onClick={() => navigate("/perusahaan")}>Lihat Portofolio</button>
           </div>
         </div>
         <div />
