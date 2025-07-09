@@ -1,0 +1,59 @@
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  background: #f7f7ff;
+  font-family: sans-serif;
+}
+
+.sidebar {
+  width: 200px;
+  background: #f2ecfb;
+  padding: 20px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 20px 0;
+  cursor: pointer;
+  color: #333;
+}
+
+.dashboard-content {
+  flex: 1;
+  padding: 20px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+}
+
+.profile-card, .highlight-card {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #ccc;
+  flex: 1;
+}
+
+.highlight-card {
+  flex: 2;
+}
+
+.summary {
+  margin-top: 30px;
+  display: flex;
+  gap: 20px;
+}
+
+.summary .box {
+  flex: 1;
+  background: linear-gradient(to bottom right, #d2b5f9, #f4eaff);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}

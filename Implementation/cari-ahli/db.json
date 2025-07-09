@@ -1,0 +1,77 @@
+{
+  "userPoints": {
+    "item": {
+      "item": {
+        "item": {
+          "item": {
+            "item": {
+              "item": {
+                "item": {
+                  "item": {
+                    "item": {
+                      "item": {
+                        "item": {
+                          "item": {
+                            "item": {
+                              "item": {
+                                "item": {
+                                  "item": {
+                                    "item": {
+                                      "item": {
+                                        "points": 500
+                                      },
+                                      "points": 2700
+                                    },
+                                    "points": 1300
+                                  },
+                                  "points": 1200
+                                },
+                                "points": -1100
+                              },
+                              "points": 3000
+                            },
+                            "points": -13100
+                          },
+                          "points": 1500
+                        },
+                        "points": 0
+                      },
+                      "points": 2000
+                    },
+                    "points": 1900
+                  },
+                  "points": 0
+                },
+                "points": 1000
+              },
+              "points": 900
+            },
+            "points": 700
+          },
+          "points": 400
+        },
+        "points": 0
+      },
+      "points": 1500
+    },
+    "points": 4000
+  },
+  "pickups": [
+    {
+      "name": "burhan",
+      "address": "bantul",
+      "wasteType": "Plastik",
+      "weight": "20",
+      "points": 2000,
+      "id": "01dc"
+    },
+    {
+      "id": "a1ad",
+      "name": "alex",
+      "address": "kasihan",
+      "wasteType": "Kertas",
+      "weight": "15",
+      "points": 3000
+    }
+  ]
+}
