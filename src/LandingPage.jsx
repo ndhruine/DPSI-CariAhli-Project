@@ -206,7 +206,7 @@ export default function LandingPage() {
         />
 
         <nav className="nav-menu">
-          <button onClick={() => navigate("/home")} className="active">Beranda</button>
+          <button onClick={() => navigate("/")} className="active">Beranda</button>
           <button onClick={() => navigate("/tentang")}>Tentang Kami</button>
         </nav>
 
