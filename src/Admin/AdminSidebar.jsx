@@ -31,7 +31,7 @@ const AdminSidebar = ({ isOpen, onToggleSidebar }) => {
       {/* Menu navigasi */}
       <div className="p-4 flex flex-col space-y-2">
         <NavLink
-          to="/adashboard"
+          to="/admin/adashboard"
           className={({ isActive }) =>
             `p-2 rounded hover:bg-purple-200 font-medium ${
               isActive ? 'text-purple-700' : 'text-black'
