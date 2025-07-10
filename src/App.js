@@ -63,7 +63,7 @@ function App() {
           <Route path="portofoliomahasiswa" element={<PortofolioMahasiswa />} />
           <Route path="ddetailportofolio/:id" element={<DDetailPortofolio />} />
         </Route>
-        <Route path="/perusahaan" element={<Perusahaan />} />
+        <Route path="/rekruter" element={<Perusahaan />} />
       </Routes>
   );
 }
