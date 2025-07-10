@@ -149,6 +149,7 @@ export default function LandingPage() {
           background: var(--white);
           color: var(--purple);
           border: 2px solid var(--purple);
+          border-radius: 0px 50px 50px 0px;
         }
 
         @media (max-width: 1279px) {
@@ -206,7 +207,7 @@ export default function LandingPage() {
         />
 
         <nav className="nav-menu">
-          <button onClick={() => navigate("/home")} className="active">Beranda</button>
+          <button onClick={() => navigate("/")} className="active">Beranda</button>
           <button onClick={() => navigate("/tentang")}>Tentang Kami</button>
         </nav>
 

@@ -249,7 +249,7 @@ export default function TentangKami() {
         />
 
         <nav className="nav-menu">
-          <button onClick={() => navigate("/home")}>Beranda</button>
+          <button onClick={() => navigate("/")}>Beranda</button>
           <button className="active">Tentang Kami</button>
         </nav>
 
