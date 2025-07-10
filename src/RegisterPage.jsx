@@ -1,6 +1,7 @@
+// RegisterPage.js
 import React, { useState } from "react";
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { doc, setDoc } from "firebase/firestore";
 import { auth, db } from "./Firebase";
 import { useNavigate } from "react-router-dom";
 
@@ -44,10 +45,19 @@ export default function RegisterPage() {
         role,
       });
 
-      alert("Registrasi berhasil! Anda akan diarahkan ke halaman login.");
-      setTimeout(() => navigate("/login"), 1000);
+      alert("Registrasi berhasil!");
+      navigate("/login");
     } catch (error) {
-      alert("Gagal registrasi: " + error.message);
+      console.error("Register error:", error.code, error.message);
+      if (error.code === "auth/email-already-in-use") {
+        alert("Email sudah digunakan.");
+      } else if (error.code === "auth/invalid-email") {
+        alert("Format email salah.");
+      } else if (error.code === "auth/weak-password") {
+        alert("Password terlalu lemah (min. 6 karakter).");
+      } else {
+        alert("Gagal registrasi: " + error.message);
+      }
     }
   };
 
@@ -118,7 +128,6 @@ export default function RegisterPage() {
 
         .form-panel select {
           cursor: pointer;
-          color: ${form.role ? "#333" : "#999"};
         }
 
         .form-panel select option {
@@ -197,27 +206,32 @@ export default function RegisterPage() {
 
       <div className="register-page">
         <div className="form-panel">
-          <h1 style={{ color: "#FF6F00" }}>SELAMAT DATANG</h1>
-          <p>Buat akun di Cari Ahli</p>
+          <h1>SELAMAT DATANG</h1>
+          <p className="subtitle">Buat akun di Cari Ahli</p>
           <input type="text" name="nama" placeholder="Nama Lengkap" onChange={handleChange} />
           <input type="email" name="email" placeholder="Email" onChange={handleChange} />
-          <input type="tel" name="hp" placeholder="No. Hp" onChange={handleChange} />
+          <input type="tel" name="hp" placeholder="No. HP" onChange={handleChange} />
           <input type="password" name="password" placeholder="Password" onChange={handleChange} />
-          <input type="password" name="konfirmasi" placeholder="Konfirmasi password" onChange={handleChange} />
-          <select name="role" value={form.role} onChange={handleChange}>
-            <option value="" disabled hidden>Saya adalah...</option>
+          <input type="password" name="konfirmasi" placeholder="Konfirmasi Password" onChange={handleChange} />
+          <select
+            name="role"
+            value={form.role}
+            onChange={handleChange}
+            style={{ color: form.role ? "#333" : "#999" }}
+          >
+            <option value="" disabled hidden>
+              Saya adalah...
+            </option>
             <option value="mahasiswa">Mahasiswa</option>
             <option value="rekruter">Perusahaan</option>
             <option value="dosen">Dosen</option>
             <option value="admin">Admin</option>
           </select>
           <button className="submit-btn" onClick={handleRegister}>DAFTAR</button>
-        
+
           <p className="bottom-text">
             <span className="orange">Sudah punya akun?</span>{" "}
-            <span className="white" onClick={() => navigate("/login")}>
-              Masuk di sini
-            </span>
+            <span className="white" onClick={() => navigate("/login")}>Masuk di sini</span>
           </p>
         </div>
         <div className="illustration" />
