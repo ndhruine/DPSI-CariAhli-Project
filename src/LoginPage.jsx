@@ -1,8 +1,9 @@
+// LoginPage.js
 import React, { useState } from "react";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "./Firebase";
-import { useNavigate } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const navigate = useNavigate();
@@ -11,7 +12,7 @@ export default function LoginPage() {
 
   const handleLogin = async () => {
     if (!email || !password) {
-      alert("Silakan isi email dan password.");
+      alert("Isi email dan password.");
       return;
     }
 
@@ -21,14 +22,23 @@ export default function LoginPage() {
 
       const userDoc = await getDoc(doc(db, "users", user.uid));
       if (userDoc.exists()) {
-        const role = userDoc.data().role;
-        alert("Login berhasil!");
-        navigate(`/${role}`); // navigasi otomatis ke /mahasiswa, /admin, dst
+        const data = userDoc.data();
+        alert("Login berhasil sebagai " + data.role);
+        navigate(`/${data.role}`); // Navigasi ke halaman sesuai role
       } else {
         alert("Data pengguna tidak ditemukan.");
       }
     } catch (error) {
-      alert("Gagal login: " + error.message);
+      console.error("Login error:", error.code, error.message);
+      if (error.code === "auth/user-not-found") {
+        alert("Pengguna tidak ditemukan.");
+      } else if (error.code === "auth/wrong-password") {
+        alert("Password salah.");
+      } else if (error.code === "auth/invalid-credential") {
+        alert("Email atau password tidak valid.");
+      } else {
+        alert("Gagal login: " + error.message);
+      }
     }
   };
 
@@ -187,18 +197,21 @@ export default function LoginPage() {
 
       <div className="login-page">
         <div className="form-panel">
-          <h1 style={{ color: "#FF6F00" }}>SELAMAT DATANG</h1>
-          <p>Masuk untuk melanjutkan</p>
-          <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-          <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <h1>SELAMAT DATANG</h1>
+          <p className="subtitle">Masuk untuk melanjutkan</p>
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
           <button className="submit-btn" onClick={handleLogin}>MASUK</button>
-        
-          <p className="bottom-link">
-            <span className="orange">Lupa Password?</span>{" "}
-            <span className="white" onClick={() => navigate("/forgot-password")}>
-              Klik di sini
-            </span>
-          </p>
 
           <p className="bottom-link">
             <span className="orange">Belum punya akun?</span>{" "}
@@ -207,6 +220,7 @@ export default function LoginPage() {
             </span>
           </p>
         </div>
+
         <div className="illustration" />
       </div>
     </>
