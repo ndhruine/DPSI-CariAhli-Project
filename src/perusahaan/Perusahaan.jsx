@@ -3,24 +3,13 @@ import Sidebar from './Sidebar';
 import Header from './Header';
 import PerusahaanDashboard from './PerusahaanDashboard';
 import KandidatCard from './KandidatCard';
-import DetailKandidat from './DetailKandidat';
 import WawancaraContent from './WawancaraContent';
 
 const Perusahaan = () => {
   const [activeMenu, setActiveMenu] = useState('dashboard');
-  const [selectedKandidat, setSelectedKandidat] = useState(null);
 
   const handleMenuClick = (menu) => {
     setActiveMenu(menu);
-    setSelectedKandidat(null);
-  };
-
-  const handleKandidatClick = (kandidat) => {
-    setSelectedKandidat(kandidat);
-  };
-
-  const handleBackToDashboard = () => {
-    setSelectedKandidat(null);
   };
 
   return (
@@ -46,24 +35,19 @@ const Perusahaan = () => {
           padding: 20px;
         }
       `}</style>
-      
+
       <Sidebar activeMenu={activeMenu} onMenuClick={handleMenuClick} />
-      
+
       <div className="main-content">
         <Header />
-        
+
         <div className="content-area">
-          {selectedKandidat ? (
-            <DetailKandidat 
-              kandidat={selectedKandidat} 
-              onBack={handleBackToDashboard}
-            />
-          ) : activeMenu === 'dashboard' ? (
-            <PerusahaanDashboard onKandidatClick={handleKandidatClick} />
+          {activeMenu === 'dashboard' ? (
+            <PerusahaanDashboard />
           ) : activeMenu === 'daftar-kandidat' ? (
             <div>
               <h2>Daftar Kandidat</h2>
-              <KandidatCard onKandidatClick={handleKandidatClick} />
+              <KandidatCard />
             </div>
           ) : activeMenu === 'wawancara' ? (
             <WawancaraContent />

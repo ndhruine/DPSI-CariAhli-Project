@@ -1,62 +1,107 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { db } from '../Firebase';
 
-const PerusahaanDashboard = ({ onKandidatClick }) => {
-  const kandidatList = [
-    {
-      id: 1,
-      name: 'Chika Nurdini',
-      skills: ['Web Development', 'Java Script', 'React'],
-      avatar: '👤'
-    },
-    {
-      id: 2,
-      name: 'Fitra Anggoro',
-      skills: ['Data Analysis', 'React', 'HTML'],
-      avatar: '👤'
+export default function PerusahaanDashboard() {
+  const [mahasiswa, setMahasiswa] = useState([]);
+  const [selectedMahasiswa, setSelectedMahasiswa] = useState(null);
+  const [kontak, setKontak] = useState({ email: '', noHp: '', nim: '' });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const querySnapshot = await getDocs(collection(db, 'portofolio'));
+      const data = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setMahasiswa(data);
+    };
+
+    fetchData();
+  }, []);
+
+  const fetchKontak = async (nim) => {
+    try {
+      const userSnapshot = await getDocs(collection(db, 'users'));
+      const userData = userSnapshot.docs
+        .map((doc) => doc.data())
+        .find((user) => user.email?.substring(0, 10) === nim);
+
+      if (userData) {
+        setKontak({
+          email: userData.email || '',
+          noHp: userData.hp || '',
+          nim,
+        });
+      } else {
+        setKontak({ email: '-', noHp: '-', nim });
+      }
+    } catch (error) {
+      console.error('Gagal mengambil data kontak:', error);
     }
-  ];
+  };
 
-  const detailKandidat = {
-    id: 1,
-    name: 'Chika Nurdini',
-    position: 'Web Development',
-    skills: ['Java Script', 'React'],
-    description: 'Web developer with experience in building responsive websites and modern web applications. Skilled in user interface development and has a portfolio of real projects in frontend development.',
-    avatar: '👤'
+  const handlePilihMahasiswa = async (mhs) => {
+    setSelectedMahasiswa(mhs);
+    await fetchKontak(mhs.nim);
+  };
+
+  const handleTambahKandidat = async () => {
+    try {
+      await addDoc(collection(db, 'kandidatTerpilih'), { ...selectedMahasiswa, ...kontak });
+      alert('Kandidat berhasil ditambahkan!');
+    } catch (error) {
+      console.error('Gagal menambahkan kandidat:', error);
+      alert('Gagal menambahkan kandidat.');
+    }
+  };
+
+  const handleHubungi = () => {
+    const { email, noHp } = kontak;
+    if (noHp) {
+      window.open(`https://wa.me/${noHp}`, '_blank');
+    } else if (email) {
+      window.location.href = `mailto:${email}`;
+    } else {
+      alert('Kontak tidak tersedia');
+    }
   };
 
   return (
-    <div className="perusahaan-dashboard">
+    <div className="dashboard-container">
       <style>{`
-        .perusahaan-dashboard {
-          padding: 20px;
-          max-width: 1400px;
-        }
-
-        .welcome-title {
-          font-size: 28px;
-          font-weight: bold;
-          color: #4B0082;
-          margin-bottom: 30px;
-        }
-
-        .main-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 30px;
-          margin-bottom: 30px;
-        }
-
-        .left-section {
+        .dashboard-container {
           display: flex;
-          flex-direction: column;
+          padding: 20px;
+          gap: 30px;
+        }
+
+        .kandidat-list {
+          flex: 1;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
           gap: 20px;
         }
 
-        .kandidat-cards {
-          display: flex;
-          flex-direction: column;
-          gap: 15px;
+        .detail-panel {
+          flex: 1;
+          background: #f9f9f9;
+          border-radius: 12px;
+          padding: 20px;
+          box-shadow: 0 0 10px rgba(0,0,0,0.1);
+          position: relative;
+        }
+
+        .close-btn {
+          position: absolute;
+          top: 10px;
+          right: 15px;
+          background: none;
+          border: none;
+          font-size: 22px;
+          cursor: pointer;
+          color: #999;
+        }
+
+        .close-btn:hover {
+          color: #333;
         }
 
         .kandidat-card {
@@ -65,25 +110,19 @@ const PerusahaanDashboard = ({ onKandidatClick }) => {
           padding: 20px;
           box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
           border: 2px solid #e0e0e0;
-          cursor: pointer;
-          transition: transform 0.3s, box-shadow 0.3s;
-          width: 100%;
-          height: 120px;
-          display: flex;
-          align-items: center;
-          gap: 15px;
+          transition: transform 0.3s;
+          height: 200px;
         }
 
         .kandidat-card:hover {
           transform: translateY(-5px);
-          box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
         }
 
-        .kandidat-content {
-          flex: 1;
+        .kandidat-header {
           display: flex;
-          flex-direction: column;
-          justify-content: center;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 10px;
         }
 
         .kandidat-avatar {
@@ -94,271 +133,115 @@ const PerusahaanDashboard = ({ onKandidatClick }) => {
           display: flex;
           align-items: center;
           justify-content: center;
-          font-size: 25px;
-          flex-shrink: 0;
-        }
-
-        .kandidat-name {
-          font-size: 16px;
-          font-weight: bold;
-          color: #333;
-          margin-bottom: 5px;
-        }
-
-        .kandidat-skills {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 5px;
-          margin-bottom: 8px;
-        }
-
-        .skill-item {
-          font-size: 11px;
-          color: #666;
-          background-color: #f5f5f5;
-          padding: 2px 6px;
-          border-radius: 8px;
-        }
-
-        .lihat-portofolio-btn {
-          background-color: #C8B5A0;
-          color: white;
-          border: none;
-          padding: 6px 12px;
-          border-radius: 15px;
-          cursor: pointer;
-          font-size: 12px;
-          transition: background-color 0.3s;
-        }
-
-        .lihat-portofolio-btn:hover {
-          background-color: #B39A85;
-        }
-
-        .stats-container {
-          background: linear-gradient(135deg, #E6D7FF 0%, #D4C5F9 100%);
-          border-radius: 20px;
-          padding: 30px;
-          margin-bottom: 30px;
-          position: relative;
-        }
-
-        .stats-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
-        }
-
-        .stat-card {
-          background: white;
-          border-radius: 15px;
-          padding: 25px;
-          text-align: center;
-          
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        .stat-title {
-          font-size: 20px;
-          font-weight: bold;
-          color: #333;
-          margin-bottom: 10px;
-        }
-
-        .stat-number {
-          font-size: 48px;
-          font-weight: bold;
-          color: #4B0082;
-          margin-bottom: 10px;
-        }
-
-        .stat-subtitle {
-          font-size: 18px;
-          font-weight: bold;
-          color: #333;
-          margin-bottom: 15px;
-        }
-
-        .calendar-icon {
-          width: 40px;
-          height: 40px;
-          object-fit: contain;
-          filter: brightness(0);
-          margin: 0 auto;
-          display: block;
-        }
-
-        .detail-kandidat-card {
-          background: white;
-          border-radius: 15px;
-          padding: 30px;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-          border: 2px solid #e0e0e0;
-          height: auto;
-          min-height: 400px;
-          display: flex;
-          flex-direction: column;
-        }
-
-        .detail-kandidat-header {
-          display: flex;
-          align-items: center;
-          gap: 20px;
-          margin-bottom: 20px;
-        }
-
-        .detail-avatar {
-          width: 80px;
-          height: 80px;
-          border-radius: 50%;
-          background-color: #f0f0f0;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 40px;
-        }
-
-        .detail-info h3 {
           font-size: 24px;
-          font-weight: bold;
-          color: #333;
-          margin-bottom: 5px;
-        }
-
-        .detail-position {
-          font-size: 16px;
-          color: #666;
-          margin-bottom: 15px;
-        }
-
-        .detail-skills {
-          display: flex;
-          gap: 10px;
-          margin-bottom: 20px;
         }
 
         .skill-tag {
           background-color: #E6D7FF;
           color: #4B0082;
-          padding: 5px 12px;
-          border-radius: 15px;
+          padding: 4px 8px;
+          border-radius: 10px;
           font-size: 12px;
-          font-weight: 500;
+          margin-right: 5px;
+          display: inline-block;
+          margin-top: 5px;
         }
 
-        .detail-description {
-          font-size: 14px;
-          color: #666;
-          line-height: 1.6;
-          margin-bottom: 25px;
-        }
-
-        .detail-actions {
-          display: flex;
-          gap: 15px;
-        }
-
-        .detail-btn {
-          padding: 12px 24px;
-          border-radius: 25px;
+        .action-btn {
+          margin-top: 15px;
+          padding: 8px 12px;
+          background-color: #C8B5A0;
+          color: white;
           border: none;
-          font-size: 14px;
-          font-weight: 600;
+          border-radius: 20px;
           cursor: pointer;
-          transition: background-color 0.3s;
         }
 
-        .lihat-portofolio-detail {
-          background-color: #666;
-          color: white;
+        .action-btn:hover {
+          background-color: #b39a85;
         }
 
-        .lihat-portofolio-detail:hover {
-          background-color: #555;
+        .detail-panel h2 {
+          margin-top: 0;
         }
 
-        .hubungi-kandidat {
-          background-color: #666;
-          color: white;
+        .proyek-box {
+          margin-top: 10px;
+          padding: 10px;
+          background: #fff;
+          border-radius: 8px;
+          box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        .hubungi-kandidat:hover {
-          background-color: #555;
+        .button-group {
+          display: flex;
+          gap: 10px;
+          margin-top: 20px;
         }
       `}</style>
-      
-      <h1 className="welcome-title">Selamat Datang di Cari Ahli</h1>
 
-      <div className="main-grid">
-        <div className="left-section">
-          <div className="kandidat-cards">
-            {kandidatList.map((kandidat) => (
-              <div 
-                key={kandidat.id} 
-                className="kandidat-card"
-                onClick={() => onKandidatClick(kandidat)}
-              >
-                <div className="kandidat-avatar">{kandidat.avatar}</div>
-                <div className="kandidat-content">
-                  <div className="kandidat-name">{kandidat.name}</div>
-                  <div className="kandidat-skills">
-                    {kandidat.skills.map((skill, index) => (
-                      <div key={index} className="skill-item">{skill}</div>
-                    ))}
-                  </div>
-                  <button className="lihat-portofolio-btn">Lihat Portofolio</button>
-                </div>
+      <div className="kandidat-list">
+        {mahasiswa.map((mhs) => (
+          <div key={mhs.id} className="kandidat-card">
+            <div className="kandidat-header">
+              <div className="kandidat-avatar">👤</div>
+              <div>
+                <h3>{mhs.nama}</h3>
+                <p>Semester {mhs.semester}</p>
               </div>
+            </div>
+            <div>
+              {mhs.skill?.map((skill, idx) => (
+                <span key={idx} className="skill-tag">{skill}</span>
+              ))}
+            </div>
+            <button className="action-btn" onClick={() => handlePilihMahasiswa(mhs)}>
+              Lihat Portofolio
+            </button>
+          </div>
+        ))}
+      </div>
+
+      {selectedMahasiswa && (
+        <div className="detail-panel">
+          <button className="close-btn" onClick={() => setSelectedMahasiswa(null)}>×</button>
+
+          <div className="kandidat-header">
+            <div className="kandidat-avatar">👤</div>
+            <div>
+              <h2>{selectedMahasiswa.nama}</h2>
+              <p>Semester {selectedMahasiswa.semester}</p>
+              <p><strong>NIM:</strong> {selectedMahasiswa.nim}</p>
+              <p><strong>Email:</strong> {kontak.email}</p>
+              <p><strong>No. HP:</strong> {kontak.noHp}</p>
+            </div>
+          </div>
+
+          <div>
+            {selectedMahasiswa.skill?.map((skill, idx) => (
+              <span key={idx} className="skill-tag">{skill}</span>
             ))}
           </div>
 
-          <div className="stats-container">
-            <div className="stats-grid">
-              <div className="stat-card">
-                <div className="stat-title">Total</div>
-                <div className="stat-title">Kandidat</div>
-                <div className="stat-number">30</div>
+          <h3 style={{ marginTop: '20px' }}>Proyek</h3>
+          {selectedMahasiswa.proyek?.length > 0 ? (
+            selectedMahasiswa.proyek.map((p, i) => (
+              <div key={i} className="proyek-box">
+                <strong>{p.judul}</strong> <br />
+                <small>{p.kategori} - {p.tahun}</small>
+                <p>{p.deskripsi}</p>
               </div>
-              
-              <div className="stat-card">
-                <div className="stat-subtitle">Jadwal</div>
-                <div className="stat-subtitle">Wawancara</div>
-                <img src="/images/icon/calender.png" alt="Calendar" className="calendar-icon" />
-              </div>
-            </div>
-          </div>
-        </div>
+            ))
+          ) : (
+            <p>Belum ada proyek.</p>
+          )}
 
-        <div className="detail-kandidat-card">
-          <div className="detail-kandidat-header">
-            <div className="detail-avatar">{detailKandidat.avatar}</div>
-            <div className="detail-info">
-              <h3>{detailKandidat.name}</h3>
-              <div className="detail-position">{detailKandidat.position}</div>
-              <div className="detail-skills">
-                {detailKandidat.skills.map((skill, index) => (
-                  <span key={index} className="skill-tag">{skill}</span>
-                ))}
-              </div>
-            </div>
-          </div>
-          
-          <div className="detail-description">
-            {detailKandidat.description}
-          </div>
-          
-          <div className="detail-actions">
-            <button className="detail-btn lihat-portofolio-detail">
-              Lihat Portofolio
-            </button>
-            <button className="detail-btn hubungi-kandidat">
-              Hubungi Kandidat
-            </button>
+          <div className="button-group">
+            <button className="action-btn" onClick={handleTambahKandidat}>Tambah Kandidat</button>
+            <button className="action-btn" onClick={handleHubungi}>Hubungi</button>
           </div>
         </div>
-      </div>
+      )}
     </div>
   );
-};
-
-export default PerusahaanDashboard;
+}

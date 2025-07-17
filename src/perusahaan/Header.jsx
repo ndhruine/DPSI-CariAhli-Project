@@ -109,7 +109,7 @@ const Header = () => {
             👤
           </div>
           <div className="profile-info">
-            <div className="profile-name">Admin</div>
+            <div className="profile-name">Rekruter</div>
             <div className="profile-role">Perusahaan</div>
           </div>
         </div>
